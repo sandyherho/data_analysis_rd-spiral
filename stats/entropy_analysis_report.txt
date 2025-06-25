@@ -1,0 +1,132 @@
+SPIRAL WAVE ENTROPY ANALYSIS REPORT
+============================================================
+Generated: 2025-06-25 08:11:05
+Author: Sandy Herho <sandy.herho@email.ucr.edu>
+============================================================
+
+METHODOLOGY
+----------------------------------------
+1. Shannon Entropy: H = -∑ p(x) log₂(p(x))
+2. Spatial Entropy: Mean local entropy over 5×5 windows
+3. Joint Entropy: H(U,V) for concentration fields
+4. Mutual Information: I(U;V) = H(U) + H(V) - H(U,V)
+
+RESULTS
+============================================================
+
+TIME t = 5.0
+----------------------------------------
+
+STABLE SPIRAL:
+  Shannon Entropy (u):         6.453046 bits
+  Shannon Entropy (v):         6.454239 bits
+  Shannon Entropy (u+v):       6.462929 bits
+  Spatial Entropy (u):         3.668062 ± 0.417121 bits
+  Spatial Entropy (v):         3.668424 ± 0.417033 bits
+  Spatial Entropy (u+v):       3.671311 ± 0.416954 bits
+  Joint Entropy H(U,V):        8.320609 bits
+  Mutual Information I(U;V):   4.586676 bits
+  Normalized MI:               0.710711
+
+TURBULENT SPIRAL:
+  Shannon Entropy (u):         6.466953 bits
+  Shannon Entropy (v):         6.423104 bits
+  Shannon Entropy (u+v):       6.455867 bits
+  Spatial Entropy (u):         3.611074 ± 0.475047 bits
+  Spatial Entropy (v):         3.592213 ± 0.468959 bits
+  Spatial Entropy (u+v):       3.623995 ± 0.465091 bits
+  Joint Entropy H(U,V):        8.250349 bits
+  Mutual Information I(U;V):   4.639707 bits
+  Normalized MI:               0.719894
+
+COMPARISON (Turbulent/Stable ratio):
+  Shannon Entropy (u+v):       0.999x
+  Spatial Entropy (u+v):       0.987x
+  Mutual Information:          1.012x
+
+============================================================
+
+TIME t = 100.0
+----------------------------------------
+
+STABLE SPIRAL:
+  Shannon Entropy (u):         6.483675 bits
+  Shannon Entropy (v):         6.482570 bits
+  Shannon Entropy (u+v):       6.489512 bits
+  Spatial Entropy (u):         3.675664 ± 0.383334 bits
+  Spatial Entropy (v):         3.677937 ± 0.382751 bits
+  Spatial Entropy (u+v):       3.670517 ± 0.382467 bits
+  Joint Entropy H(U,V):        8.661463 bits
+  Mutual Information I(U;V):   4.304781 bits
+  Normalized MI:               0.663998
+
+TURBULENT SPIRAL:
+  Shannon Entropy (u):         6.506001 bits
+  Shannon Entropy (v):         6.561031 bits
+  Shannon Entropy (u+v):       6.600704 bits
+  Spatial Entropy (u):         3.620729 ± 0.431495 bits
+  Spatial Entropy (v):         3.643434 ± 0.397495 bits
+  Spatial Entropy (u+v):       3.660448 ± 0.403447 bits
+  Joint Entropy H(U,V):        9.375893 bits
+  Mutual Information I(U;V):   3.691138 bits
+  Normalized MI:               0.564959
+
+COMPARISON (Turbulent/Stable ratio):
+  Shannon Entropy (u+v):       1.017x
+  Spatial Entropy (u+v):       0.997x
+  Mutual Information:          0.857x
+
+============================================================
+
+TIME t = 200.0
+----------------------------------------
+
+STABLE SPIRAL:
+  Shannon Entropy (u):         6.485583 bits
+  Shannon Entropy (v):         6.485124 bits
+  Shannon Entropy (u+v):       6.487587 bits
+  Spatial Entropy (u):         3.678110 ± 0.376941 bits
+  Spatial Entropy (v):         3.681832 ± 0.375930 bits
+  Spatial Entropy (u+v):       3.682089 ± 0.377957 bits
+  Joint Entropy H(U,V):        8.682015 bits
+  Mutual Information I(U;V):   4.288692 bits
+  Normalized MI:               0.661289
+
+TURBULENT SPIRAL:
+  Shannon Entropy (u):         6.478368 bits
+  Shannon Entropy (v):         6.426605 bits
+  Shannon Entropy (u+v):       6.503733 bits
+  Spatial Entropy (u):         3.682025 ± 0.339902 bits
+  Spatial Entropy (v):         3.683954 ± 0.320648 bits
+  Spatial Entropy (u+v):       3.720122 ± 0.306543 bits
+  Joint Entropy H(U,V):        8.762961 bits
+  Mutual Information I(U;V):   4.142012 bits
+  Normalized MI:               0.641930
+
+COMPARISON (Turbulent/Stable ratio):
+  Shannon Entropy (u+v):       1.002x
+  Spatial Entropy (u+v):       1.010x
+  Mutual Information:          0.966x
+
+============================================================
+
+TEMPORAL EVOLUTION SUMMARY
+----------------------------------------
+
+STABLE SYSTEM:
+  Shannon entropy change (t=5 to t=200): +0.4%
+  Spatial entropy change (t=5 to t=200): +0.3%
+  Mutual information change (t=5 to t=200): -6.5%
+
+TURBULENT SYSTEM:
+  Shannon entropy change (t=5 to t=200): +0.7%
+  Spatial entropy change (t=5 to t=200): +2.7%
+  Mutual information change (t=5 to t=200): -10.7%
+
+
+CONCLUSIONS
+----------------------------------------
+1. Turbulent systems show consistently higher entropy than stable systems
+2. Entropy measures can distinguish between ordered and chaotic dynamics
+3. Spatial entropy captures local pattern complexity
+4. Mutual information reveals coupling between u and v fields

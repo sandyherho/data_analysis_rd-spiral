@@ -1,0 +1,227 @@
+================================================================================
+NORMALITY ANALYSIS OF REACTION-DIFFUSION SPIRAL DYNAMICS
+================================================================================
+Analysis Date: 2025-06-25 07:00:25
+Author: Sandy Herho <sandy.herho@email.ucr.edu>
+
+RESEARCH CONTEXT
+--------------------------------------------------------------------------------
+Objective: Systematic evaluation of distributional characteristics in
+reaction-diffusion spiral dynamics under stable and turbulent regimes.
+
+Methodological Framework:
+- Multiple normality tests with bootstrap validation
+- 5,000 bootstrap iterations per test
+- Comprehensive assessment of departure from Gaussian behavior
+
+1. DESCRIPTIVE STATISTICS
+--------------------------------------------------------------------------------
+
+Series: σ_u (Stable)
+  Sample size: 2,001
+  Mean ± SD: 0.670465 ± 0.001711
+  Median [IQR]: 0.670638 [0.000255]
+  Range: [0.657393, 0.703240]
+  Coefficient of Variation: 0.0026
+  Skewness: 0.1040 (approximately symmetric)
+  Excess Kurtosis: 96.2497 (leptokurtic - more peaked than normal)
+  Percentiles: 5th=0.670048, 95th=0.671027
+
+Series: σ_u (Turbulent)
+  Sample size: 2,001
+  Mean ± SD: 0.665332 ± 0.011852
+  Median [IQR]: 0.665146 [0.015637]
+  Range: [0.635589, 0.706247]
+  Coefficient of Variation: 0.0178
+  Skewness: 0.1952 (approximately symmetric)
+  Excess Kurtosis: -3.0984 (platykurtic - flatter than normal)
+  Percentiles: 5th=0.646862, 95th=0.686090
+
+Series: σ_v (Stable)
+  Sample size: 2,001
+  Mean ± SD: 0.670464 ± 0.001710
+  Median [IQR]: 0.670637 [0.000263]
+  Range: [0.657403, 0.703240]
+  Coefficient of Variation: 0.0026
+  Skewness: 0.1101 (approximately symmetric)
+  Excess Kurtosis: 96.4037 (leptokurtic - more peaked than normal)
+  Percentiles: 5th=0.670122, 95th=0.671020
+
+Series: σ_v (Turbulent)
+  Sample size: 2,001
+  Mean ± SD: 0.654919 ± 0.012626
+  Median [IQR]: 0.654612 [0.016164]
+  Range: [0.621519, 0.706419]
+  Coefficient of Variation: 0.0193
+  Skewness: 0.2227 (approximately symmetric)
+  Excess Kurtosis: -2.7573 (platykurtic - flatter than normal)
+  Percentiles: 5th=0.634863, 95th=0.679250
+
+
+2. NORMALITY TESTS WITH BOOTSTRAP ANALYSIS
+--------------------------------------------------------------------------------
+
+Series: σ_u (Stable)
+  Shapiro-Wilk Test:
+    W = 0.254894, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean W = 0.256598 ± 0.020050
+      95% CI for W: [0.215915, 0.292351]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  D'Agostino-Pearson Test:
+    K² = 811.076404, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean K² = 1585.998444 ± 552.044741
+      95% CI for K²: [797.174398, 2500.742378]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  Anderson-Darling Test:
+    A² = 520.790013, Critical value (5%) = 0.785000
+    Bootstrap Analysis (5,000 iterations):
+      Mean A² = 519.872150 ± 12.743832
+      95% CI for A²: [492.672092, 542.689986]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  Jarque-Bera Test:
+    JB = 821290.009447, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean JB = 765762.512642 ± 561548.392272
+      95% CI for JB: [134792.796243, 2045026.814484]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+
+  Overall Assessment:
+    Original tests: 0/4 suggest normality
+    Bootstrap average: 0.0% of samples suggest normality
+    Strong and robust evidence against normality
+
+Series: σ_u (Turbulent)
+  Shapiro-Wilk Test:
+    W = 0.995543, p = 0.000011
+    Bootstrap Analysis (5,000 iterations):
+      Mean W = 0.994825 ± 0.001101
+      95% CI for W: [0.992284, 0.996637]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  D'Agostino-Pearson Test:
+    K² = 13.319725, p = 0.001281
+    Bootstrap Analysis (5,000 iterations):
+      Mean K² = 14.981563 ± 5.599887
+      95% CI for K²: [5.923384, 27.621981]
+      Bootstrap proportion suggesting normality: 0.026
+    Conclusion: Non-normal distribution
+  Anderson-Darling Test:
+    A² = 1.644380, Critical value (5%) = 0.785000
+    Bootstrap Analysis (5,000 iterations):
+      Mean A² = 2.002554 ± 0.638597
+      95% CI for A²: [1.006044, 3.454831]
+      Bootstrap proportion suggesting normality: 0.005
+    Conclusion: Non-normal distribution
+  Jarque-Bera Test:
+    JB = 13.512541, p = 0.001164
+    Bootstrap Analysis (5,000 iterations):
+      Mean JB = 14.947345 ± 5.821636
+      95% CI for JB: [5.717275, 28.371904]
+      Bootstrap proportion suggesting normality: 0.030
+    Conclusion: Non-normal distribution
+
+  Overall Assessment:
+    Original tests: 0/4 suggest normality
+    Bootstrap average: 1.5% of samples suggest normality
+    Strong and robust evidence against normality
+
+Series: σ_v (Stable)
+  Shapiro-Wilk Test:
+    W = 0.254612, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean W = 0.256290 ± 0.020348
+      95% CI for W: [0.214705, 0.292544]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  D'Agostino-Pearson Test:
+    K² = 811.768266, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean K² = 1590.708725 ± 549.998915
+      95% CI for K²: [800.630295, 2498.344103]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  Anderson-Darling Test:
+    A² = 521.221233, Critical value (5%) = 0.785000
+    Bootstrap Analysis (5,000 iterations):
+      Mean A² = 520.039384 ± 12.953931
+      95% CI for A²: [492.005686, 542.672887]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  Jarque-Bera Test:
+    JB = 823840.002147, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean JB = 754132.978023 ± 550778.098347
+      95% CI for JB: [133450.752258, 2059821.309630]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+
+  Overall Assessment:
+    Original tests: 0/4 suggest normality
+    Bootstrap average: 0.0% of samples suggest normality
+    Strong and robust evidence against normality
+
+Series: σ_v (Turbulent)
+  Shapiro-Wilk Test:
+    W = 0.989175, p = 0.000000
+    Bootstrap Analysis (5,000 iterations):
+      Mean W = 0.988382 ± 0.001909
+      95% CI for W: [0.984271, 0.991818]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  D'Agostino-Pearson Test:
+    K² = 20.580541, p = 0.000034
+    Bootstrap Analysis (5,000 iterations):
+      Mean K² = 21.912308 ± 9.558964
+      95% CI for K²: [7.109745, 43.818252]
+      Bootstrap proportion suggesting normality: 0.013
+    Conclusion: Non-normal distribution
+  Anderson-Darling Test:
+    A² = 5.755721, Critical value (5%) = 0.785000
+    Bootstrap Analysis (5,000 iterations):
+      Mean A² = 6.127628 ± 1.292768
+      95% CI for A²: [3.892065, 8.902916]
+      Bootstrap proportion suggesting normality: 0.000
+    Conclusion: Non-normal distribution
+  Jarque-Bera Test:
+    JB = 21.459243, p = 0.000022
+    Bootstrap Analysis (5,000 iterations):
+      Mean JB = 23.333410 ± 11.138607
+      95% CI for JB: [7.292786, 49.955478]
+      Bootstrap proportion suggesting normality: 0.012
+    Conclusion: Non-normal distribution
+
+  Overall Assessment:
+    Original tests: 0/4 suggest normality
+    Bootstrap average: 0.6% of samples suggest normality
+    Strong and robust evidence against normality
+
+
+3. SCIENTIFIC INTERPRETATION
+--------------------------------------------------------------------------------
+
+Key Findings:
+
+1. Distributional Characteristics:
+   - All time series exhibit significant departures from Gaussian behavior
+   - Bootstrap analysis confirms robust non-normality across all tests
+   - Consistent evidence across multiple test methodologies
+
+2. Physical Implications:
+   - Non-normal distributions reflect complex nonlinear dynamics
+   - Turbulent regimes show enhanced distributional complexity
+   - Deviations from normality indicate multi-scale interactions
+
+3. Methodological Considerations:
+   - Non-parametric statistical methods are essential
+   - Bootstrap validation strengthens statistical inference
+   - Multiple test agreement provides robust conclusions
+
+================================================================================
+END OF NORMALITY ANALYSIS
+================================================================================

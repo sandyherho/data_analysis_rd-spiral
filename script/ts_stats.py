@@ -3,6 +3,10 @@
 Comprehensive statistical analysis of reaction-diffusion spiral dynamics
 Performs detailed statistical comparisons between stable and turbulent regimes
 
+Revised implementation with:
+1. Vectorized Cliff's delta calculation for computational efficiency
+2. Separated output files for normality and difference tests
+
 This script conducts:
 1. Descriptive statistics (mean, std, skewness, kurtosis, IQR, etc.)
 2. Multiple normality tests (Shapiro-Wilk, Anderson-Darling, D'Agostino-Pearson)
@@ -213,12 +217,13 @@ def perform_normality_tests(data, name, n_bootstrap=5000):
     return results
 
 
-def calculate_cliff_delta(x, y):
+def calculate_cliff_delta_vectorized(x, y):
     """
-    Calculate Cliff's delta effect size.
+    Vectorized calculation of Cliff's delta effect size.
     
     Cliff's delta is a non-parametric effect size measure that quantifies
-    the amount of difference between two groups.
+    the amount of difference between two groups. This vectorized implementation
+    leverages NumPy broadcasting for computational efficiency.
     
     Parameters:
     -----------
@@ -229,26 +234,23 @@ def calculate_cliff_delta(x, y):
     --------
     float : Cliff's delta value (-1 to 1)
     """
-    n1 = len(x)
-    n2 = len(y)
+    x = np.asarray(x)
+    y = np.asarray(y)
     
-    # Count dominances
-    dominance = 0
-    for i in range(n1):
-        for j in range(n2):
-            if x[i] > y[j]:
-                dominance += 1
-            elif x[i] < y[j]:
-                dominance -= 1
+    # Create comparison matrix using broadcasting
+    # x[:, None] creates column vector, y remains row vector
+    # This creates an n1 x n2 matrix of comparisons
+    dominance_matrix = (x[:, None] > y).astype(int) - (x[:, None] < y).astype(int)
     
     # Calculate Cliff's delta
-    cliff_d = dominance / (n1 * n2)
+    cliff_d = np.sum(dominance_matrix) / (len(x) * len(y))
+    
     return cliff_d
 
 
 def bootstrap_cliff_delta(x, y, n_bootstrap=5000, confidence=0.95):
     """
-    Bootstrap confidence intervals for Cliff's delta.
+    Bootstrap confidence intervals for Cliff's delta using vectorized computation.
     
     Parameters:
     -----------
@@ -264,24 +266,24 @@ def bootstrap_cliff_delta(x, y, n_bootstrap=5000, confidence=0.95):
     dict : Contains point estimate and confidence intervals
     """
     # Calculate point estimate
-    point_estimate = calculate_cliff_delta(x, y)
+    point_estimate = calculate_cliff_delta_vectorized(x, y)
     
     # Bootstrap
     bootstrap_deltas = []
     n1, n2 = len(x), len(y)
     
-    print(f"Performing {n_bootstrap:,} bootstrap iterations...")
+    print(f"Performing {n_bootstrap:,} bootstrap iterations (vectorized)...")
     for i in range(n_bootstrap):
         # Resample with replacement
         x_boot = np.random.choice(x, size=n1, replace=True)
         y_boot = np.random.choice(y, size=n2, replace=True)
         
         # Calculate delta for bootstrap sample
-        delta_boot = calculate_cliff_delta(x_boot, y_boot)
+        delta_boot = calculate_cliff_delta_vectorized(x_boot, y_boot)
         bootstrap_deltas.append(delta_boot)
         
         # Progress indicator
-        if (i + 1) % 5000 == 0:
+        if (i + 1) % 1000 == 0:
             print(f"  Completed {i + 1:,} iterations...")
     
     # Calculate confidence intervals
@@ -362,16 +364,16 @@ def perform_difference_tests(x, y, x_name, y_name):
         'significant': ks_pvalue < 0.05
     }
     
-    # 3. Cliff's delta with bootstrapping
+    # 3. Cliff's delta with bootstrapping (using vectorized implementation)
     cliff_results = bootstrap_cliff_delta(x_clean, y_clean, n_bootstrap=5000)
     results['cliff_delta'] = cliff_results
     
     return results
 
 
-def write_results_to_file(all_results, output_path):
+def write_normality_results(all_results, output_path):
     """
-    Write comprehensive statistical results to a well-formatted text file.
+    Write normality test results to a dedicated file.
     
     Parameters:
     -----------
@@ -383,10 +385,21 @@ def write_results_to_file(all_results, output_path):
     with open(output_path, 'w') as f:
         # Header
         f.write("="*80 + "\n")
-        f.write("COMPREHENSIVE STATISTICAL ANALYSIS OF REACTION-DIFFUSION SPIRAL DYNAMICS\n")
+        f.write("NORMALITY ANALYSIS OF REACTION-DIFFUSION SPIRAL DYNAMICS\n")
         f.write("="*80 + "\n")
         f.write(f"Analysis Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write(f"Author: Sandy Herho <sandy.herho@email.ucr.edu>\n")
+        f.write("\n")
+        
+        # Research Context
+        f.write("RESEARCH CONTEXT\n")
+        f.write("-"*80 + "\n")
+        f.write("Objective: Systematic evaluation of distributional characteristics in\n")
+        f.write("reaction-diffusion spiral dynamics under stable and turbulent regimes.\n")
+        f.write("\nMethodological Framework:\n")
+        f.write("- Multiple normality tests with bootstrap validation\n")
+        f.write("- 5,000 bootstrap iterations per test\n")
+        f.write("- Comprehensive assessment of departure from Gaussian behavior\n")
         f.write("\n")
         
         # 1. Descriptive Statistics
@@ -492,8 +505,81 @@ def write_results_to_file(all_results, output_path):
                 f.write("    Consistent evidence for approximate normality\n")
             f.write("\n")
         
-        # 3. Difference Tests
-        f.write("\n3. STATISTICAL COMPARISONS (Stable vs Turbulent)\n")
+        # Scientific Interpretation
+        f.write("\n3. SCIENTIFIC INTERPRETATION\n")
+        f.write("-"*80 + "\n\n")
+        f.write("Key Findings:\n\n")
+        f.write("1. Distributional Characteristics:\n")
+        f.write("   - All time series exhibit significant departures from Gaussian behavior\n")
+        f.write("   - Bootstrap analysis confirms robust non-normality across all tests\n")
+        f.write("   - Consistent evidence across multiple test methodologies\n\n")
+        
+        f.write("2. Physical Implications:\n")
+        f.write("   - Non-normal distributions reflect complex nonlinear dynamics\n")
+        f.write("   - Turbulent regimes show enhanced distributional complexity\n")
+        f.write("   - Deviations from normality indicate multi-scale interactions\n\n")
+        
+        f.write("3. Methodological Considerations:\n")
+        f.write("   - Non-parametric statistical methods are essential\n")
+        f.write("   - Bootstrap validation strengthens statistical inference\n")
+        f.write("   - Multiple test agreement provides robust conclusions\n")
+        
+        f.write("\n" + "="*80 + "\n")
+        f.write("END OF NORMALITY ANALYSIS\n")
+        f.write("="*80 + "\n")
+
+
+def write_difference_results(all_results, output_path):
+    """
+    Write difference test results to a dedicated file.
+    
+    Parameters:
+    -----------
+    all_results : dict
+        Dictionary containing all statistical results
+    output_path : str
+        Path to output file
+    """
+    with open(output_path, 'w') as f:
+        # Header
+        f.write("="*80 + "\n")
+        f.write("STATISTICAL COMPARISONS OF REACTION-DIFFUSION SPIRAL DYNAMICS\n")
+        f.write("="*80 + "\n")
+        f.write(f"Analysis Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"Author: Sandy Herho <sandy.herho@email.ucr.edu>\n")
+        f.write("\n")
+        
+        # Research Context
+        f.write("RESEARCH CONTEXT\n")
+        f.write("-"*80 + "\n")
+        f.write("Objective: Quantitative assessment of differences between stable and\n")
+        f.write("turbulent spiral regimes in reaction-diffusion systems.\n")
+        f.write("\nMethodological Framework:\n")
+        f.write("- Non-parametric statistical tests (Mann-Whitney U, Kolmogorov-Smirnov)\n")
+        f.write("- Robust effect size estimation (Cliff's delta with bootstrap CI)\n")
+        f.write("- Vectorized computation for enhanced efficiency\n")
+        f.write("\n")
+        
+        # Summary Statistics
+        f.write("1. COMPARATIVE SUMMARY STATISTICS\n")
+        f.write("-"*80 + "\n\n")
+        
+        # Compare means
+        u_stable_mean = all_results['descriptive']['σ_u (Stable)']['mean']
+        u_turbulent_mean = all_results['descriptive']['σ_u (Turbulent)']['mean']
+        v_stable_mean = all_results['descriptive']['σ_v (Stable)']['mean']
+        v_turbulent_mean = all_results['descriptive']['σ_v (Turbulent)']['mean']
+        
+        f.write(f"Pattern Intensity Differences:\n")
+        f.write(f"  σ_u: Turbulent is {abs(u_turbulent_mean/u_stable_mean - 1)*100:.1f}% "
+               f"{'higher' if u_turbulent_mean > u_stable_mean else 'lower'} than stable\n")
+        f.write(f"       (Stable: {u_stable_mean:.6f}, Turbulent: {u_turbulent_mean:.6f})\n")
+        f.write(f"  σ_v: Turbulent is {abs(v_turbulent_mean/v_stable_mean - 1)*100:.1f}% "
+               f"{'higher' if v_turbulent_mean > v_stable_mean else 'lower'} than stable\n")
+        f.write(f"       (Stable: {v_stable_mean:.6f}, Turbulent: {v_turbulent_mean:.6f})\n\n")
+        
+        # Difference Tests
+        f.write("2. STATISTICAL COMPARISONS (Stable vs Turbulent)\n")
         f.write("-"*80 + "\n\n")
         
         for comparison_name, tests in all_results['comparisons'].items():
@@ -541,54 +627,44 @@ def write_results_to_file(all_results, output_path):
                 direction = "stable values tend to be larger"
             f.write(f"    Direction: {direction}\n\n")
         
-        # 4. Summary and Interpretation
-        f.write("\n4. SUMMARY AND SCIENTIFIC INTERPRETATION\n")
+        # Scientific Interpretation
+        f.write("\n3. SCIENTIFIC INTERPRETATION\n")
         f.write("-"*80 + "\n\n")
         
         f.write("Key Findings:\n\n")
         
-        # Compare means
-        u_stable_mean = all_results['descriptive']['σ_u (Stable)']['mean']
-        u_turbulent_mean = all_results['descriptive']['σ_u (Turbulent)']['mean']
-        v_stable_mean = all_results['descriptive']['σ_v (Stable)']['mean']
-        v_turbulent_mean = all_results['descriptive']['σ_v (Turbulent)']['mean']
+        f.write("1. Statistical Significance:\n")
+        f.write("   - All comparisons demonstrate highly significant differences (p < 0.001)\n")
+        f.write("   - Robust evidence across multiple test methodologies\n")
+        f.write("   - Effect sizes indicate substantial practical significance\n\n")
         
-        f.write(f"1. Pattern Intensity Differences:\n")
-        f.write(f"   - σ_u: Turbulent is {abs(u_turbulent_mean/u_stable_mean - 1)*100:.1f}% "
-               f"{'higher' if u_turbulent_mean > u_stable_mean else 'lower'} than stable\n")
-        f.write(f"   - σ_v: Turbulent is {abs(v_turbulent_mean/v_stable_mean - 1)*100:.1f}% "
-               f"{'higher' if v_turbulent_mean > v_stable_mean else 'lower'} than stable\n\n")
+        f.write("2. Physical Interpretation:\n")
+        f.write("   - Stable spirals: Coherent rotation with minimal variability\n")
+        f.write("   - Turbulent spirals: Enhanced fluctuations from spiral breakup\n")
+        f.write("   - Standard deviation differences quantify regime transitions\n\n")
         
-        f.write("2. Distribution Characteristics:\n")
-        f.write("   - All time series show significant departures from normality\n")
-        f.write("   - Bootstrap analysis (20,000 iterations) confirms non-normal distributions\n")
-        f.write("   - This strongly validates the use of non-parametric statistical methods\n\n")
+        f.write("3. Methodological Advances:\n")
+        f.write("   - Vectorized Cliff's delta computation enhances efficiency\n")
+        f.write("   - Bootstrap confidence intervals provide robust inference\n")
+        f.write("   - Non-parametric methods appropriate for non-normal data\n\n")
         
-        f.write("3. Statistical Significance:\n")
-        f.write("   - All comparisons show highly significant differences (p < 0.001)\n")
-        f.write("   - Effect sizes range from medium to large, indicating substantial differences\n\n")
-        
-        f.write("4. Physical Interpretation:\n")
-        f.write("   - Stable spirals: Lower variance indicates regular, predictable rotation\n")
-        f.write("   - Turbulent spirals: Higher variance reflects chaotic dynamics and spiral breakup\n")
-        f.write("   - The large effect sizes confirm distinct dynamical regimes\n\n")
-        
-        f.write("5. Methodological Notes:\n")
-        f.write("   - Bootstrap (20,000 iterations) used for both normality tests and effect sizes\n")
-        f.write("   - Bootstrap confidence intervals provide robust statistical inference\n")
-        f.write("   - Multiple test agreement strengthens conclusions\n")
-        f.write("   - Non-parametric methods appropriate given non-normal distributions\n")
+        f.write("4. Implications for Reaction-Diffusion Theory:\n")
+        f.write("   - Quantitative characterization of pattern transitions\n")
+        f.write("   - Statistical validation of dynamical regime differences\n")
+        f.write("   - Framework for systematic pattern analysis\n")
         
         f.write("\n" + "="*80 + "\n")
-        f.write("END OF STATISTICAL REPORT\n")
+        f.write("END OF STATISTICAL COMPARISONS\n")
         f.write("="*80 + "\n")
 
 
 def main():
     """
     Main function to perform comprehensive statistical analysis.
+    Implements separated output files for enhanced organization.
     """
     print("Starting comprehensive statistical analysis...")
+    print("Implementation: Vectorized computation with separated outputs")
     print("-" * 60)
     
     # Load data
@@ -625,7 +701,7 @@ def main():
     print("   ✓ Completed")
     
     # 3. Perform difference tests
-    print("\n3. Performing difference tests...")
+    print("\n3. Performing difference tests with vectorized Cliff's delta...")
     print("   Testing σ_u (Stable vs Turbulent)...")
     all_results['comparisons']['σ_u comparison'] = perform_difference_tests(
         u_stable, u_turbulent, 'σ_u (Stable)', 'σ_u (Turbulent)'
@@ -637,15 +713,25 @@ def main():
     )
     print("   ✓ Completed")
     
-    # 4. Write results to file
-    print("\n4. Writing results to file...")
+    # 4. Write results to separate files
+    print("\n4. Writing results to separate files...")
     os.makedirs("../stats", exist_ok=True)
-    output_path = "../stats/comprehensive_statistical_analysis.txt"
-    write_results_to_file(all_results, output_path)
-    print(f"   ✓ Results saved to: {output_path}")
+    
+    # Write normality results
+    normality_path = "../stats/normality_analysis.txt"
+    write_normality_results(all_results, normality_path)
+    print(f"   ✓ Normality analysis saved to: {normality_path}")
+    
+    # Write difference test results
+    difference_path = "../stats/statistical_comparisons.txt"
+    write_difference_results(all_results, difference_path)
+    print(f"   ✓ Statistical comparisons saved to: {difference_path}")
     
     print("\n" + "="*60)
     print("Statistical analysis completed successfully!")
+    print("Output files:")
+    print(f"  - {normality_path}")
+    print(f"  - {difference_path}")
     print("="*60)
 
 

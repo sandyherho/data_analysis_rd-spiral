@@ -1,0 +1,95 @@
+================================================================================
+STATISTICAL COMPARISONS OF REACTION-DIFFUSION SPIRAL DYNAMICS
+================================================================================
+Analysis Date: 2025-06-25 07:00:25
+Author: Sandy Herho <sandy.herho@email.ucr.edu>
+
+RESEARCH CONTEXT
+--------------------------------------------------------------------------------
+Objective: Quantitative assessment of differences between stable and
+turbulent spiral regimes in reaction-diffusion systems.
+
+Methodological Framework:
+- Non-parametric statistical tests (Mann-Whitney U, Kolmogorov-Smirnov)
+- Robust effect size estimation (Cliff's delta with bootstrap CI)
+- Vectorized computation for enhanced efficiency
+
+1. COMPARATIVE SUMMARY STATISTICS
+--------------------------------------------------------------------------------
+
+Pattern Intensity Differences:
+  σ_u: Turbulent is 0.8% lower than stable
+       (Stable: 0.670465, Turbulent: 0.665332)
+  σ_v: Turbulent is 2.3% lower than stable
+       (Stable: 0.670464, Turbulent: 0.654919)
+
+2. STATISTICAL COMPARISONS (Stable vs Turbulent)
+--------------------------------------------------------------------------------
+
+Comparison: σ_u comparison
+  Sample sizes: n₁=2,001, n₂=2,001
+
+  Mann-Whitney U Test:
+    U = 2749725.0, p = 0.000000
+    Effect size r = inf (large effect)
+    Conclusion: Significant difference in central tendency (α=0.05)
+
+  Kolmogorov-Smirnov Test:
+    D = 0.629685, p = 0.000000
+    Conclusion: Significant difference in distributions (α=0.05)
+
+  Cliff's Delta (Robust Effect Size):
+    Point estimate: δ = 0.3735
+    95% Bootstrap CI: [0.3354, 0.4117]
+    Bootstrap iterations: 5,000
+    Effect size interpretation: MEDIUM
+    Direction: turbulent values tend to be larger
+
+Comparison: σ_v comparison
+  Sample sizes: n₁=2,001, n₂=2,001
+
+  Mann-Whitney U Test:
+    U = 3566728.0, p = 0.000000
+    Effect size r = inf (large effect)
+    Conclusion: Significant difference in central tendency (α=0.05)
+
+  Kolmogorov-Smirnov Test:
+    D = 0.841079, p = 0.000000
+    Conclusion: Significant difference in distributions (α=0.05)
+
+  Cliff's Delta (Robust Effect Size):
+    Point estimate: δ = 0.7816
+    95% Bootstrap CI: [0.7552, 0.8092]
+    Bootstrap iterations: 5,000
+    Effect size interpretation: LARGE
+    Direction: turbulent values tend to be larger
+
+
+3. SCIENTIFIC INTERPRETATION
+--------------------------------------------------------------------------------
+
+Key Findings:
+
+1. Statistical Significance:
+   - All comparisons demonstrate highly significant differences (p < 0.001)
+   - Robust evidence across multiple test methodologies
+   - Effect sizes indicate substantial practical significance
+
+2. Physical Interpretation:
+   - Stable spirals: Coherent rotation with minimal variability
+   - Turbulent spirals: Enhanced fluctuations from spiral breakup
+   - Standard deviation differences quantify regime transitions
+
+3. Methodological Advances:
+   - Vectorized Cliff's delta computation enhances efficiency
+   - Bootstrap confidence intervals provide robust inference
+   - Non-parametric methods appropriate for non-normal data
+
+4. Implications for Reaction-Diffusion Theory:
+   - Quantitative characterization of pattern transitions
+   - Statistical validation of dynamical regime differences
+   - Framework for systematic pattern analysis
+
+================================================================================
+END OF STATISTICAL COMPARISONS
+================================================================================
